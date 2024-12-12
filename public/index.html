@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rick and Morty API</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Rick and Morty API Viewer</h1>
+      <button id="characters">Cargar Personajes</button>
+      <button id="locations">Cargar Ubicaciones</button>
+      <button id="episodes">Cargar Episodios</button>
+      <div id="output"></div>
+    </div>
+
+    <script>
+      // Función para generar HTML dinámico
+      function renderData(data, type) {
+        const output = document.getElementById("output");
+        output.innerHTML = ""; // Limpiar contenido previo
+
+        // Crear una lista o tarjetas en base al tipo
+        if (type === "characters") {
+          data.forEach((character) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.innerHTML = `
+                      <h3>${character.name}</h3>
+                      <p>ID: ${character.id}</p>
+                  `;
+            output.appendChild(card);
+          });
+        } else if (type === "locations") {
+          data.forEach((location) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.innerHTML = `
+                      <h3>${location.name}</h3>
+                      <p>ID: ${location.id}</p>
+                  `;
+            output.appendChild(card);
+          });
+        } else if (type === "episodes") {
+          data.forEach((episode) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.innerHTML = `
+                      <h3>${episode.name}</h3>
+                      <p>ID: ${episode.id}</p>
+                  `;
+            output.appendChild(card);
+          });
+        }
+      }
+
+      // Botones con eventos
+      document.getElementById("characters").onclick = async () => {
+        const res = await fetch("/api/characters");
+        const data = await res.json();
+        renderData(data, "characters");
+      };
+
+      document.getElementById("locations").onclick = async () => {
+        const res = await fetch("/api/locations");
+        const data = await res.json();
+        renderData(data, "locations");
+      };
+
+      document.getElementById("episodes").onclick = async () => {
+        const res = await fetch("/api/episodes");
+        const data = await res.json();
+        renderData(data, "episodes");
+      };
+    </script>
+  </body>
+</html>
